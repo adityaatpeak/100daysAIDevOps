@@ -1,0 +1,23 @@
+# Example child Application (Week 6). Copy this pattern per component:
+# istio.yaml, gpu-operator.yaml, kserve.yaml, kueue.yaml, inference-gateway.yaml ...
+# Each points Argo CD at a manifests/<component>/ directory in this repo.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vllm
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/<your-user>/ai-infra-upskill.git   # <-- edit
+    targetRevision: main
+    path: clusters/learning/manifests/vllm
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vllm
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
