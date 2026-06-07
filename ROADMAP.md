@@ -10,6 +10,27 @@
 
 **Guardrails:** rent ONE small GPU by the hour and tear it down; scale EKS GPU nodes to zero when idle; set a billing alarm; never commit secrets.
 
+## Week tracker — plan · issue · test
+
+Each week has a follow-along folder under `weeks/` (plan + end-of-week test) and a GitHub issue (close it when merged). Run `bash weeks/week-NN-*/test.sh` before ticking the boxes below.
+
+| Wk | Type | Plan | Issue | Test |
+|----|------|------|-------|------|
+| 01 | notes | [week-01-k8s-networking](weeks/week-01-k8s-networking/README.md) | [#1](https://github.com/adityaatpeak/100daysAIDevOps/issues/1) | `weeks/week-01-k8s-networking/test.sh` |
+| 02 | infra | [week-02-service-mesh](weeks/week-02-service-mesh/README.md) | [#2](https://github.com/adityaatpeak/100daysAIDevOps/issues/2) | `weeks/week-02-service-mesh/test.sh` |
+| 03 | infra | [week-03-istio-resource-model](weeks/week-03-istio-resource-model/README.md) | [#3](https://github.com/adityaatpeak/100daysAIDevOps/issues/3) | `weeks/week-03-istio-resource-model/test.sh` |
+| 04 | notes+infra | [week-04-inference-mechanics](weeks/week-04-inference-mechanics/README.md) | [#4](https://github.com/adityaatpeak/100daysAIDevOps/issues/4) | `weeks/week-04-inference-mechanics/test.sh` |
+| 05 | infra | [week-05-gpu-on-k8s](weeks/week-05-gpu-on-k8s/README.md) | [#5](https://github.com/adityaatpeak/100daysAIDevOps/issues/5) | `weeks/week-05-gpu-on-k8s/test.sh` |
+| 06 | infra ⭐ | [week-06-kserve-serving](weeks/week-06-kserve-serving/README.md) | [#6](https://github.com/adityaatpeak/100daysAIDevOps/issues/6) | `weeks/week-06-kserve-serving/test.sh` |
+| 07 | infra | [week-07-argo-workflows](weeks/week-07-argo-workflows/README.md) | [#7](https://github.com/adityaatpeak/100daysAIDevOps/issues/7) | `weeks/week-07-argo-workflows/test.sh` |
+| 08 | infra | [week-08-kueue-queueing](weeks/week-08-kueue-queueing/README.md) | [#8](https://github.com/adityaatpeak/100daysAIDevOps/issues/8) | `weeks/week-08-kueue-queueing/test.sh` |
+| 09 | infra ⭐ | [week-09-inference-gateway](weeks/week-09-inference-gateway/README.md) | [#9](https://github.com/adityaatpeak/100daysAIDevOps/issues/9) | `weeks/week-09-inference-gateway/test.sh` |
+| 10 | infra ⭐ | [week-10-autoscaling](weeks/week-10-autoscaling/README.md) | [#10](https://github.com/adityaatpeak/100daysAIDevOps/issues/10) | `weeks/week-10-autoscaling/test.sh` |
+| 11 | notes | [week-11-cost-slo](weeks/week-11-cost-slo/README.md) | [#11](https://github.com/adityaatpeak/100daysAIDevOps/issues/11) | `weeks/week-11-cost-slo/test.sh` |
+| 12 | infra+notes | [week-12-capstone](weeks/week-12-capstone/README.md) | [#12](https://github.com/adityaatpeak/100daysAIDevOps/issues/12) | `weeks/week-12-capstone/test.sh` |
+
+⭐ = work-aligned (2026 goals — worth extra polish).
+
 ---
 
 ## Month 1 — Foundations & first inference deploy
