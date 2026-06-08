@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>100 Days of AI DevOps — GitOps Upskill Challenge</title>
+<meta name="description" content="A 3-month, GitOps-run upskilling challenge: from k8s networking to a mesh-routed, GPU-backed, autoscaling LLM inference service on EKS — fully managed by Argo CD." />
+<style>
+  :root{
+    --bg:#0b0f17; --panel:#121826; --panel2:#0f1420; --ink:#e6edf3; --mut:#8b97a7;
+    --line:#1e2838; --acc:#3fb950; --acc2:#58a6ff; --warn:#d29922; --star:#f0c243;
+    --radius:14px; --max:1080px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:radial-gradient(1200px 600px at 80% -10%,#16233b 0,transparent 60%),var(--bg);
+    color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--acc2);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 20px}
+  header.hero{padding:90px 0 50px;text-align:center}
+  .badge{display:inline-block;font-size:13px;color:var(--acc);border:1px solid var(--line);
+    background:var(--panel);padding:5px 12px;border-radius:999px;margin-bottom:22px;letter-spacing:.3px}
+  h1{font-size:clamp(34px,6vw,58px);line-height:1.05;margin:0 0 18px;letter-spacing:-.02em}
+  h1 .grad{background:linear-gradient(90deg,#3fb950,#58a6ff);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .sub{font-size:clamp(17px,2.4vw,21px);color:var(--mut);max-width:720px;margin:0 auto 30px}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:12px 20px;border-radius:10px;font-weight:600;border:1px solid var(--line)}
+  .btn.primary{background:var(--acc);color:#04140a;border-color:transparent}
+  .btn.ghost{background:var(--panel);color:var(--ink)}
+  .btn:hover{text-decoration:none;transform:translateY(-1px)}
+  section{padding:46px 0;border-top:1px solid var(--line)}
+  h2{font-size:clamp(24px,4vw,34px);margin:0 0 10px;letter-spacing:-.01em}
+  .lead{color:var(--mut);max-width:760px;margin:0 0 28px}
+  .grid{display:grid;gap:16px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  .card{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:var(--radius);padding:20px}
+  .card h3{margin:0 0 6px;font-size:17px}
+  .card p{margin:0;color:var(--mut);font-size:14.5px}
+  .step{font:700 13px/1 ui-monospace,Menlo,Consolas,monospace;color:var(--acc);margin-bottom:10px}
+  /* roadmap */
+  .month{margin-bottom:34px}
+  .month-h{display:flex;align-items:baseline;gap:12px;margin:0 0 4px}
+  .month-h .m{font:700 13px ui-monospace,monospace;color:var(--acc2);text-transform:uppercase;letter-spacing:.08em}
+  .month-goal{color:var(--mut);margin:0 0 18px;font-size:14.5px}
+  .weeks{display:grid;gap:14px;grid-template-columns:repeat(2,1fr)}
+  .week{background:linear-gradient(180deg,var(--panel),var(--panel2));border:1px solid var(--line);
+    border-radius:var(--radius);padding:18px 18px 16px;position:relative;transition:.15s}
+  .week:hover{border-color:#2b3b55;transform:translateY(-2px)}
+  .week .top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .wk{font:700 12px ui-monospace,monospace;color:#04140a;background:var(--acc);padding:3px 8px;border-radius:6px}
+  .tag{font:600 11px ui-monospace,monospace;padding:3px 8px;border-radius:6px;border:1px solid var(--line);color:var(--mut)}
+  .tag.infra{color:#7ee2a0;border-color:#1f5132}
+  .tag.notes{color:#9ec5ff;border-color:#214a7a}
+  .star{color:var(--star);font-size:13px;margin-left:auto}
+  .week h3{margin:0 0 6px;font-size:16.5px}
+  .week p{margin:0;color:var(--mut);font-size:14px}
+  .week .build{margin-top:10px;font:12.5px ui-monospace,monospace;color:#c9d4e3;background:#0a1322;
+    border:1px solid var(--line);border-radius:8px;padding:7px 9px;display:block;word-break:break-word}
+  /* loop / code */
+  code{font:13.5px ui-monospace,Menlo,Consolas,monospace;background:#0a1322;border:1px solid var(--line);
+    border-radius:6px;padding:1px 6px;color:#c9d4e3}
+  pre{background:#0a1322;border:1px solid var(--line);border-radius:12px;padding:18px;overflow:auto;margin:0}
+  pre code{background:none;border:none;padding:0;color:#c9d4e3;line-height:1.7}
+  .pill{display:inline-block;color:var(--warn);font-size:13px;border:1px solid #4a3a12;background:#1c160a;
+    padding:8px 12px;border-radius:8px;margin-top:18px}
+  footer{padding:40px 0 60px;color:var(--mut);text-align:center;border-top:1px solid var(--line);font-size:14px}
+  .mono{font-family:ui-monospace,Menlo,Consolas,monospace}
+  @media(max-width:760px){.g3,.g4,.weeks{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <span class="badge">● 3 months · ~8 hrs/week · run as GitOps</span>
+    <h1>100 Days of <span class="grad">AI&nbsp;DevOps</span></h1>
+    <p class="sub">A self-paced upskilling challenge that ends with a <strong>mesh-routed, GPU-backed, autoscaling LLM inference service on EKS</strong> — fully GitOps-managed by Argo CD, built one PR at a time.</p>
+    <div class="cta">
+      <a class="btn primary" href="https://github.com/adityaatpeak/100daysAIDevOps" target="_blank" rel="noopener">★ Star on GitHub</a>
+      <a class="btn ghost" href="#roadmap">See the 12 weeks</a>
+      <a class="btn ghost" href="#follow">Follow along</a>
+    </div>
+  </div>
+</header>
+
+<section id="what">
+  <div class="wrap">
+    <h2>What this is</h2>
+    <p class="lead">Not a tutorial you read — a <strong>tracked plan you run like production</strong>. Every week is a GitHub issue → a branch → a build → a PR. "Done" means <em>merged</em>, and for infra weeks, <em>Synced &amp; Healthy in Argo CD</em>. The repo doubles as a real infra-as-code stack that grows week by week.</p>
+    <div class="grid g3">
+      <div class="card"><div class="step">01 — PLAN</div><h3>A tracked roadmap</h3><p>12 weekly milestones. Each is a self-contained folder with objectives, the build, and an end-of-week test.</p></div>
+      <div class="card"><div class="step">02 — BUILD</div><h3>Real infra-as-code</h3><p>Manifests committed to the repo and synced to a learning EKS cluster by Argo CD, app-of-apps style.</p></div>
+      <div class="card"><div class="step">03 — PROVE</div><h3>Test before you tick</h3><p>Every week ships a runnable test: auto checks on your artifacts + self-grade questions that prove you learned it.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="loop">
+  <div class="wrap">
+    <h2>The weekly loop</h2>
+    <p class="lead">The same loop you'd want in prod: change is a PR, the cluster reflects git, drift self-heals.</p>
+    <pre><code># 1. open the week's issue, then branch
+git checkout -b week-02-service-mesh
+
+# 2. do the build — infra YAML under clusters/learning/, notes under notes/
+# 3. prove it
+bash weeks/week-02-service-mesh/test.sh
+
+# 4. tick the ROADMAP box in the SAME PR, then open it
+gh pr create        # closes the week's issue on merge</code></pre>
+    <span class="pill">⚠ GPU cost discipline: rent ONE small GPU by the hour, scale EKS GPU nodes to zero when idle, tear it down after each session.</span>
+  </div>
+</section>
+
+<section id="roadmap">
+  <div class="wrap">
+    <h2>The 12 weeks</h2>
+    <p class="lead"><span class="tag notes">notes</span> = a write-up you commit. <span class="tag infra">infra</span> = manifests Argo CD syncs. <span class="star">★</span> = maps to real 2026 work goals.</p>
+
+    <div class="month">
+      <div class="month-h"><span class="m">Month 1</span><strong>Foundations &amp; first inference deploy</strong></div>
+      <p class="month-goal">Data-plane vs control-plane explained, a mesh canary running via Argo CD, a model served with vLLM.</p>
+      <div class="weeks">
+        <div class="week"><div class="top"><span class="wk">Wk 01</span><span class="tag notes">notes</span></div><h3>Kubernetes networking refresher</h3><p>Pod/Service model, CoreDNS, the VPC-CNI IP-exhaustion class of bug, L4 vs L7.</p><span class="build">→ notes/week-01-k8s-networking.md</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 02</span><span class="tag infra">infra</span></div><h3>Service mesh: the mental model</h3><p>Data plane vs control plane, Envoy sidecars vs istiod. Install Istio via Argo CD, prove mTLS.</p><span class="build">→ manifests/istio/ + apps/istio.yaml</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 03</span><span class="tag infra">infra</span></div><h3>Istio resource model</h3><p>VirtualService, DestinationRule, Gateway. An mTLS-enforced weighted canary with fault injection.</p><span class="build">→ manifests/istio/ (canary)</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 04</span><span class="tag notes">notes</span><span class="tag infra">infra</span></div><h3>Inference mechanics + first serve</h3><p>KV cache, continuous batching, PagedAttention. Serve a small model on one GPU, record TTFT &amp; tokens/sec.</p><span class="build">→ notes/week-04-inference-internals.md</span></div>
+      </div>
+    </div>
+
+    <div class="month">
+      <div class="month-h"><span class="m">Month 2</span><strong>Serving on Kubernetes + GPU + Argo</strong></div>
+      <p class="month-goal">Model serves on EKS GPU with full observability, an Argo DAG designed not just debugged, GPU scheduling &amp; quota understood.</p>
+      <div class="weeks">
+        <div class="week"><div class="top"><span class="wk">Wk 05</span><span class="tag infra">infra</span></div><h3>GPU on Kubernetes</h3><p>NVIDIA GPU Operator, MIG vs time-slicing, DRA. Schedule a GPU pod on EKS with Karpenter scale-to-zero.</p><span class="build">→ manifests/gpu-operator/ + apps/</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 06</span><span class="tag infra">infra</span><span class="star">★</span></div><h3>Model serving on EKS (KServe)</h3><p>InferenceService, cold-start realities. Serve behind KServe with a Grafana serving dashboard.</p><span class="build">→ manifests/vllm/ + apps/vllm.yaml</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 07</span><span class="tag infra">infra</span></div><h3>Argo Workflows: troubleshoot → design</h3><p>WorkflowTemplate, DAGs, params vs artifacts, retries &amp; exit handlers. Rebuild a sync as a clean DAG.</p><span class="build">→ manifests/workflows/</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 08</span><span class="tag infra">infra</span></div><h3>Job queueing + Argo ecosystem</h3><p>Kueue admission &amp; quota, Volcano awareness. Run a GPU job behind a quota; force a preemption.</p><span class="build">→ manifests/kueue/ + apps/kueue.yaml</span></div>
+      </div>
+    </div>
+
+    <div class="month">
+      <div class="month-h"><span class="m">Month 3</span><strong>Mesh-routed, autoscaling inference (capstone)</strong></div>
+      <p class="month-goal">An end-to-end GitOps-managed inference service on EKS you can explain, operate, and cost-justify.</p>
+      <div class="weeks">
+        <div class="week"><div class="top"><span class="wk">Wk 09</span><span class="tag infra">infra</span><span class="star">★</span></div><h3>Inference at the gateway</h3><p>Gateway API Inference Extension: InferencePool, model/LoRA-aware routing, token-aware rate limiting.</p><span class="build">→ manifests/inference-gateway/ + apps/</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 10</span><span class="tag infra">infra</span><span class="star">★</span></div><h3>Autoscaling on the right signal</h3><p>Why CPU HPA is wrong for inference. Scale vLLM on queue depth / TTFT via Prometheus adapter.</p><span class="build">→ manifests/autoscaling/</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 11</span><span class="tag notes">notes</span></div><h3>Cost + reliability pass</h3><p>GPU FinOps, Spot for inference, scale-to-zero. Inference SLOs, error budget, a PromQL alert.</p><span class="build">→ notes/week-11-cost-slo.md</span></div>
+        <div class="week"><div class="top"><span class="wk">Wk 12</span><span class="tag infra">infra</span><span class="tag notes">notes</span></div><h3>Capstone + write-up</h3><p>The full stack wired together &amp; Synced/Healthy, plus an architecture note + runbook.</p><span class="build">→ notes/week-12-architecture.md</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="follow">
+  <div class="wrap">
+    <h2>Follow along</h2>
+    <p class="lead">Fork it and run your own 100 days, or watch the build land week by week.</p>
+    <div class="grid g4">
+      <div class="card"><div class="step">FORK</div><h3>Clone the repo</h3><p>Grab <code class="mono">clusters/</code>, <code class="mono">weeks/</code>, and the templates. Point Argo CD's app-of-apps at your fork.</p></div>
+      <div class="card"><div class="step">TRACK</div><h3>Open the week issues</h3><p>One issue per week from the template. Close each as its PR merges.</p></div>
+      <div class="card"><div class="step">BUILD</div><h3>Branch → build → test</h3><p>Read <code class="mono">weeks/week-NN-*/README.md</code>, do the build, run the test before you tick.</p></div>
+      <div class="card"><div class="step">SHIP</div><h3>PR &amp; sync</h3><p>Tick the ROADMAP box in the PR. Infra weeks: confirm Synced &amp; Healthy in Argo CD.</p></div>
+    </div>
+    <div class="cta" style="margin-top:30px;justify-content:flex-start">
+      <a class="btn primary" href="https://github.com/adityaatpeak/100daysAIDevOps" target="_blank" rel="noopener">Open the repo →</a>
+      <a class="btn ghost" href="https://github.com/adityaatpeak/100daysAIDevOps/issues" target="_blank" rel="noopener">Browse the weekly issues</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Built in the open as a GitOps challenge · <a href="https://github.com/adityaatpeak/100daysAIDevOps">adityaatpeak/100daysAIDevOps</a><br/>
+    Tooling: EKS · Istio · KServe · vLLM · NVIDIA GPU Operator · Kueue · Argo CD/Workflows · Gateway API Inference Extension
+  </div>
+</footer>
+
+</body>
+</html>

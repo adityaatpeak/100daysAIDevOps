@@ -7,6 +7,8 @@ This repo is two things at once:
 1. **A tracked plan.** Each week is an issue → a branch → a PR. "Done" means *merged*, not "I read about it."
 2. **Your real infra-as-code repo.** The builds you do are committed here as manifests and synced to your learning cluster by Argo CD. By Month 3 this repo *is* a working GitOps stack — Istio, KServe, vLLM, monitoring, all declarative.
 
+> 🌐 **One-pager site:** `docs/index.html` is a self-contained landing page for the challenge so others can follow along. Enable it under **Settings → Pages → Deploy from branch → `main` / `/docs`**; it serves at `https://adityaatpeak.github.io/100daysAIDevOps/`. No build step — just static HTML.
+
 ---
 
 ## Repo layout
