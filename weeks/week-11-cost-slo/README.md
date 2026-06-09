@@ -20,6 +20,19 @@
 - Write the PromQL: SLO burn rate, p95 latency from histogram buckets.
 - Cross-check against your AWS Spot/Karpenter experience — what you'd actually run in prod.
 
+## Learn & do — topic by topic
+
+### 1 · GPU FinOps — right-sizing · Spot · scale-to-zero · MIG packing
+- **Read:** [Karpenter Spot / consolidation](https://karpenter.sh/docs/concepts/disruption/) · [EC2 Spot best practices](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-best-practices.html) · [GPU sharing/packing](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-sharing.html)
+- **Hands-on:** from your Week-4/6 throughput, compute **$/1M tokens** for the chosen instance (on-demand vs Spot). Show idle cost and the scale-to-zero saving. Note where MIG packing or a quantized/smaller model wins.
+
+### 2 · Inference SLOs · error budget · alerting
+- **Read:** [Google SRE — Implementing SLOs](https://sre.google/workbook/implementing-slos/) · [Prometheus alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/) · [Multi-window burn-rate alerts](https://sre.google/workbook/alerting-on-slos/)
+- **Hands-on:** set a latency SLO (e.g. p95 TTFT) + an availability SLO; compute the monthly error budget in minutes. Write a real **PromQL alerting rule** (p95 from histogram buckets, or a burn-rate rule) and commit the rule YAML in the note.
+
+### Failure modes
+- **Hands-on:** list the top 3 ways the serving stack degrades (OOM/KV-cache exhaustion, GPU node loss on Spot reclaim, queue saturation) and the exact signal each shows on your Week-6/10 dashboard.
+
 ## End-of-week test
 ```bash
 bash weeks/week-11-cost-slo/test.sh

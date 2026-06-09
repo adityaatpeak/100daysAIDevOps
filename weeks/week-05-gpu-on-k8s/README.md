@@ -21,6 +21,24 @@
 - Read MIG vs time-slicing trade-offs; skim DRA (`DeviceClass`/`ResourceClaim`) as the future direction.
 - `kubectl exec` into the GPU pod → `nvidia-smi`. Then delete it and watch Karpenter drain the node to zero.
 
+## Learn & do — topic by topic
+
+### 1 · NVIDIA GPU Operator (driver · device plugin · DCGM)
+- **Read:** [GPU Operator overview](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/overview.html) · [Install on EKS](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/install-gpu-operator.html)
+- **Hands-on:** install via Argo CD, then confirm `nvidia.com/gpu` shows in a node's `allocatable` and the DCGM exporter pod is running. Run a `nvidia-smi` pod requesting `nvidia.com/gpu: 1`.
+
+### 2 · MIG vs time-slicing
+- **Read:** [Time-slicing in the operator](https://docs.nvidia.com/datacenter/cloud-native/gpu-operator/latest/gpu-sharing.html) · [MIG user guide](https://docs.nvidia.com/datacenter/tesla/mig-user-guide/)
+- **Hands-on:** enable time-slicing config (e.g. 2–4 replicas), schedule 2 pods on one physical GPU, confirm both run. Write one line each: when MIG (hard isolation) wins vs time-slicing (bursty/dev).
+
+### 3 · DRA — Dynamic Resource Allocation
+- **Read:** [k8s DRA](https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/) · [NVIDIA DRA driver](https://github.com/NVIDIA/k8s-dra-driver)
+- **Hands-on:** no install needed — write a short note: what `DeviceClass`/`ResourceClaim` express that the device-plugin `nvidia.com/gpu: N` count can't (fractional, topology, attributes).
+
+### Build · Karpenter scale-to-zero
+- **Read:** [Karpenter NodePools](https://karpenter.sh/docs/concepts/nodepools/) · [Disruption/consolidation](https://karpenter.sh/docs/concepts/disruption/)
+- **Hands-on:** a GPU `NodePool` (g5/g6, prefer Spot) with consolidation. Submit the GPU pod → node appears; delete it → **watch the node terminate to zero**. Confirm `kubectl get nodes` has no GPU node at idle.
+
 ## End-of-week test
 ```bash
 bash weeks/week-05-gpu-on-k8s/test.sh

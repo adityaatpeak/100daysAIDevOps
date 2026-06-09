@@ -21,6 +21,21 @@ Write `notes/week-01-k8s-networking.md`. Required sections (the test greps for t
 2. Inspect `kubectl -n kube-system get cm coredns -o yaml` — read the Corefile.
 3. Read: kubernetes.io Services/DNS, AWS VPC CNI docs (prefix delegation).
 
+## Learn & do — topic by topic
+> Each topic = a focused resource set + a hands-on. The hands-on is what makes the test green.
+
+### 1 · Pod/Service model · kube-proxy · ClusterIP · CoreDNS
+- **Read:** [k8s Services](https://kubernetes.io/docs/concepts/services-networking/service/) · [Service & Pod DNS](https://kubernetes.io/docs/concepts/services-networking/dns-pod-service/) · [Virtual IPs & kube-proxy](https://kubernetes.io/docs/reference/networking/virtual-ips/)
+- **Hands-on:** deploy 2 replicas, `kubectl expose`, then `kubectl get endpointslices` and watch the IPs match the pods. Exec a `busybox` and `nslookup <svc>`, `<svc>.<ns>`, and the FQDN — note which resolve.
+
+### 2 · CNI + AWS VPC CNI (the IP-exhaustion class)
+- **Read:** [k8s CNI/network model](https://kubernetes.io/docs/concepts/cluster-administration/networking/) · [AWS VPC CNI](https://docs.aws.amazon.com/eks/latest/userguide/managing-vpc-cni.html) · [Increase IPs / prefix delegation](https://docs.aws.amazon.com/eks/latest/userguide/cni-increase-ip-addresses.html)
+- **Hands-on:** on an EKS node, `kubectl get node -o yaml | grep -i 'pods\|allocatable'` and compare max-pods to ENI/IP math. Write down how prefix delegation changes the ceiling and what `WARM_IP_TARGET` does.
+
+### 3 · L4 vs L7 · Ingress vs Gateway API · NetworkPolicy
+- **Read:** [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) · [Gateway API](https://gateway-api.sigs.k8s.io/) · [NetworkPolicies](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+- **Hands-on:** apply a default-deny `NetworkPolicy` to a namespace, confirm a pod loses egress, then allow one path back. Sketch why Gateway API's role split (infra vs app) beats Ingress annotations.
+
 ## End-of-week test
 ```bash
 bash weeks/week-01-k8s-networking/test.sh

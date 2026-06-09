@@ -20,6 +20,20 @@ Fill in the existing `clusters/learning/manifests/vllm/` (and `apps/vllm.yaml` i
 - Wire vLLM `/metrics` + DCGM exporter into Prometheus; build the dashboard.
 - Measure cold start: scale to zero, send one request, time first response.
 
+## Learn & do — topic by topic
+
+### 1 · KServe / Triton + the InferenceService model
+- **Read:** [KServe docs](https://kserve.github.io/website/latest/) · [InferenceService concept](https://kserve.github.io/website/latest/modelserving/control_plane/) · [vLLM/HF runtime](https://kserve.github.io/website/latest/modelserving/v1beta1/llm/huggingface/)
+- **Hands-on:** install KServe via Argo CD; deploy an `InferenceService` running vLLM for the Week-4 model, requesting `nvidia.com/gpu: 1` on the Week-5 NodePool. Hit its OpenAI-compatible endpoint and confirm Ready.
+
+### 2 · Cold-start & model-load realities
+- **Read:** [KServe autoscaling / scale-to-zero](https://kserve.github.io/website/latest/modelserving/autoscaling/autoscaling/)
+- **Hands-on:** scale to zero, send one request, and **time the cold start**. Break it down: node spin-up vs image pull vs model load. Note which dominates for a 7B model.
+
+### 3 · Serving observability (the dashboard)
+- **Read:** [vLLM metrics](https://docs.vllm.ai/en/latest/serving/metrics.html) · [DCGM exporter](https://github.com/NVIDIA/dcgm-exporter) · [Grafana provisioning](https://grafana.com/docs/grafana/latest/dashboards/build-dashboards/)
+- **Hands-on:** scrape vLLM `/metrics` + DCGM into Prometheus; build (and commit as JSON/ConfigMap) a dashboard with **TTFT, tokens/sec, GPU memory, queue depth**. Watch it move under load.
+
 ## End-of-week test
 ```bash
 bash weeks/week-06-kserve-serving/test.sh

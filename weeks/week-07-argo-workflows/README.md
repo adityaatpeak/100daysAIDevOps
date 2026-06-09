@@ -21,6 +21,20 @@
 - argo-workflows.readthedocs.io: DAG templates, artifacts, retries, exit handlers, `WorkflowTemplate`.
 - Run it, force a node failure, confirm retry + that the exit handler still fires + failure propagates to the Workflow status.
 
+## Learn & do — topic by topic
+
+### 1 · Workflow / WorkflowTemplate · controller · template types
+- **Read:** [Argo Workflows docs](https://argo-workflows.readthedocs.io/en/latest/) · [DAG template](https://argo-workflows.readthedocs.io/en/latest/walk-through/dag/) · [WorkflowTemplates](https://argo-workflows.readthedocs.io/en/latest/workflow-templates/)
+- **Hands-on:** model the extract→transform→load sync as a `dag` with explicit `dependencies` (not linear `steps`). Submit it and read the DAG view in the Argo UI.
+
+### 2 · Parameters vs artifacts (S3 repo)
+- **Read:** [Parameters](https://argo-workflows.readthedocs.io/en/latest/walk-through/parameters/) · [Artifacts](https://argo-workflows.readthedocs.io/en/latest/walk-through/artifacts/) · [Configuring an artifact repo](https://argo-workflows.readthedocs.io/en/latest/configure-artifact-repository/)
+- **Hands-on:** pass inputs (source, target, batch size) as `parameters`; pass a file between nodes as an S3 `artifact`. Wire repo creds via **IRSA / a referenced secret** — never inline. Confirm the artifact lands in S3.
+
+### 3 · Retries · timeouts · exitHandler · failure propagation
+- **Read:** [Retries](https://argo-workflows.readthedocs.io/en/latest/retries/) · [Exit handlers / lifecycle hooks](https://argo-workflows.readthedocs.io/en/latest/lifecyclehook/)
+- **Hands-on:** add `retryStrategy` (limit+backoff) and `activeDeadlineSeconds`; add an `onExit` handler. Force a node to fail — confirm it retries, the exit handler still fires, and the Workflow ends `Failed`.
+
 ## End-of-week test
 ```bash
 bash weeks/week-07-argo-workflows/test.sh
