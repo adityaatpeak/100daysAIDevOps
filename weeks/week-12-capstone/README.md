@@ -19,6 +19,20 @@
 - Walk every Argo CD app to Healthy; fix drift.
 - Do a real end-to-end request and a real rollback. Time a cold start. Tear the GPU down and bring it back from git only.
 
+## Learn & do — topic by topic
+
+### 1 · Integrate — everything Synced & Healthy
+- **Read:** [Argo CD app-of-apps](https://argo-cd.readthedocs.io/en/stable/operator-manual/cluster-bootstrapping/) · [Sync & health status](https://argo-cd.readthedocs.io/en/stable/operator-manual/health/)
+- **Hands-on:** walk every child Application (istio, gpu-operator, vllm/kserve, kueue, inference-gateway, autoscaling, workflows) to **Synced & Healthy**. Fix any drift. Nothing running that isn't in git.
+
+### 2 · Operate — prove the path & rollback
+- **Read:** [Argo Rollouts (if used for canary)](https://argo-rollouts.readthedocs.io/en/stable/) · re-skim your Week-3 canary + Week-10 HPA notes
+- **Hands-on:** run one real end-to-end request through the full path (client → gateway → mesh → KServe → vLLM/GPU). Then do a **real rollback** of one component and confirm Argo heals it. Time a cold start.
+
+### 3 · Document — architecture note + runbook
+- **Read:** [Google SRE — writing runbooks/playbooks](https://sre.google/workbook/incident-response/)
+- **Hands-on:** write `notes/week-12-architecture.md` with the topology diagram, key decisions (+ rejected alternatives), steady-state & per-token cost, failure modes→signals, and a runbook: deploy / roll back / scale / **tear down (GPU to zero)**. Then actually tear the GPU down and rebuild from git only.
+
 ## End-of-week test
 ```bash
 bash weeks/week-12-capstone/test.sh

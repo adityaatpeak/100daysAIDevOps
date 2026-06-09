@@ -21,6 +21,24 @@
 - docs.vllm.ai: architecture, PagedAttention paper summary, continuous batching.
 - Run with `--max-model-len` modest; watch GPU memory vs KV-cache blocks in vLLM logs.
 
+## Learn & do — topic by topic
+
+### 1 · KV cache · continuous batching · PagedAttention
+- **Read:** [vLLM PagedAttention blog](https://blog.vllm.ai/2023/06/20/vllm.html) · [vLLM docs home](https://docs.vllm.ai/en/latest/) · [Continuous batching (Anyscale write-up)](https://www.anyscale.com/blog/continuous-batching-llm-inference)
+- **Hands-on:** start `vllm serve` and read the startup log — note the number of KV-cache blocks and GPU memory reserved. Lower `--max-model-len` and watch block count change.
+
+### 2 · Quantization · speculative decoding
+- **Read:** [vLLM quantization](https://docs.vllm.ai/en/latest/features/quantization/) · [vLLM speculative decoding](https://docs.vllm.ai/en/latest/features/spec_decode/)
+- **Hands-on:** serve the model once at full precision and once quantized (e.g. AWQ/GPTQ build if available); compare GPU memory + tokens/sec. Note the quality/throughput trade-off you observe.
+
+### 3 · Engine comparison — vLLM vs SGLang vs TensorRT-LLM
+- **Read:** [SGLang](https://docs.sglang.ai/) · [TensorRT-LLM](https://nvidia.github.io/TensorRT-LLM/)
+- **Hands-on:** write a 5-row comparison table (ease, perf ceiling, hardware lock-in, features like structured output / prefix caching) and pick a default + when you'd switch.
+
+### Build · serve & measure
+- **Read:** [vLLM OpenAI-compatible server](https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html)
+- **Hands-on:** hit `/v1/chat/completions` with `stream:true` to time **TTFT** (first token); then send N concurrent requests to measure steady **tokens/sec** at 2 concurrency levels. Record both in the note. **Then tear the GPU down.**
+
 ## End-of-week test
 ```bash
 bash weeks/week-04-inference-mechanics/test.sh

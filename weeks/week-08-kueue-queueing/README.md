@@ -21,6 +21,20 @@
 - `kubectl get workloads` to watch admission state; trigger preemption and read the events.
 - Skim Volcano (gang scheduling) — know when you'd need all-or-nothing scheduling.
 
+## Learn & do — topic by topic
+
+### 1 · Kueue — admission, quota, queues
+- **Read:** [Kueue concepts](https://kueue.sigs.k8s.io/docs/concepts/) · [ClusterQueue](https://kueue.sigs.k8s.io/docs/concepts/cluster_queue/) · [Run a Job](https://kueue.sigs.k8s.io/docs/tasks/run/jobs/)
+- **Hands-on:** define a `ResourceFlavor` (GPU node), a `ClusterQueue` with `nvidia.com/gpu` quota 1, and a `LocalQueue`. Submit two GPU jobs to the queue → one admits, one stays `Pending`. `kubectl get workloads` to see admission state.
+
+### 2 · Preemption & priorities (+ Volcano awareness)
+- **Read:** [Kueue preemption](https://kueue.sigs.k8s.io/docs/concepts/preemption/) · [WorkloadPriorityClass](https://kueue.sigs.k8s.io/docs/concepts/workload_priority_class/) · [Volcano](https://volcano.sh/en/docs/)
+- **Hands-on:** submit a higher-priority job and **watch it preempt** the running one; the evicted workload requeues. Read the events. Note in one line when you'd reach for Volcano gang scheduling instead.
+
+### 3 · Argo ecosystem — CD vs Rollouts vs Events
+- **Read:** [Argo CD](https://argo-cd.readthedocs.io/en/stable/) · [Argo Rollouts](https://argo-rollouts.readthedocs.io/en/stable/) · [Argo Events](https://argoproj.github.io/argo-events/)
+- **Hands-on:** write one sentence each on what problem each solves, and where each could slot into *this* stack (CD = the app-of-apps you already run; Rollouts = progressive canary; Events = trigger a Workflow on an event).
+
 ## End-of-week test
 ```bash
 bash weeks/week-08-kueue-queueing/test.sh

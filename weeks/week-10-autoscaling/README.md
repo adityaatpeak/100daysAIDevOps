@@ -21,6 +21,19 @@
 - Prometheus adapter rules (`seriesQuery`/`metricsQuery`), `kubectl get --raw /apis/custom.metrics.k8s.io/...` to confirm the metric is served.
 - Run the load test; watch `kubectl get hpa -w` scale up on queue depth, then down. Note the lag vs CPU-based scaling.
 
+## Learn & do — topic by topic
+
+### 1 · Why CPU HPA is wrong for inference
+- **Read:** [HPA concepts](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/) · [HPA walkthrough](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale-walkthrough/)
+- **Hands-on:** load-test the vLLM service and chart CPU% vs queue depth vs latency. Show that CPU stays flat while queue depth and TTFT climb — i.e. CPU can't see saturation. Write the one-paragraph argument.
+
+### 2 · Serving metrics → Prometheus adapter → HPA
+- **Read:** [prometheus-adapter](https://github.com/kubernetes-sigs/prometheus-adapter) · [Custom/external metrics HPA](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/#scaling-on-custom-metrics) · [vLLM metrics](https://docs.vllm.ai/en/latest/serving/metrics.html)
+- **Hands-on:** configure prometheus-adapter to expose `num_requests_waiting` (queue depth) or Istio p95 latency as a custom/external metric. Verify with `kubectl get --raw /apis/custom.metrics.k8s.io/v1beta1`. Write an `autoscaling/v2` HPA targeting it with min/max + stabilization windows.
+
+### Build · prove it scales
+- **Hands-on:** ramp load with `hey`/`k6`/`fortio`; `kubectl get hpa -w` to watch replicas scale **up on queue depth**, then drain to min. Capture before/after replicas vs queue vs latency. Confirm the GPU NodePool scales back to zero after.
+
 ## End-of-week test
 ```bash
 bash weeks/week-10-autoscaling/test.sh
